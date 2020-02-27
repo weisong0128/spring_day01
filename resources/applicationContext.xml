@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--将pojo中Dog 类的对象创建过程交给这个xml文件-->
+    <!--<bean id="smallDog"  class="com.java.pojo.Dog" init-method="init" destroy-method="destroy"></bean>-->
+    <!--<bean id="ck"  class="com.java.pojo.Chicken" lazy-init="true"></bean>-->
+
+    <bean id="master" class="com.java.pojo.Admin"></bean>
+
+    <bean id="db"  class="com.java.pojo.DB" lazy-init="true">
+        <!--通过driver属性对应的setDriver方法给DB的对象赋值-->
+        <property name="driver" value="com.mysql.jdbc.Driver"></property>
+        <property name="port" value="3306"></property>
+        <!--给DB对象属性中的Admin类型属性赋值-->
+        <property name="admin" ref="master"></property>
+        <!--给list类型的属性赋值-->
+        <property name="list">
+            <list>
+                <value>set集合2</value>
+                <value>true</value>
+                <value>2.14</value>
+                <ref bean="master"></ref>
+            </list>
+        </property>
+        <!--给set集合赋值-->
+        <property name="set">
+            <set>
+                <value>list集合1</value>
+                <value>true</value>
+                <value>3.14</value>
+                <ref bean="master"></ref>
+            </set>
+        </property>
+        <!--给properties类型的属性赋值-->
+        <property name="properties">
+            <props>
+                <prop key="driver">com.mysql.jdbc.Driver</prop>
+                <prop key="username">root</prop>
+                <prop key="password">root</prop>
+            </props>
+        </property>
+        <!--给Map类型的属性赋值-->
+        <property name="map">
+            <map>
+                <entry key="uName" value="王二麻子"></entry>
+                <entry key="bookName" value="Spring-春天来了"></entry>
+            </map>
+        </property>
+    </bean>
+
+    <!--演示 通过有参构造方法给对象的属性赋值-->
+    <bean id="smallDB" class="com.java.pojo.DB">
+        <constructor-arg index="0" name="driver" type="java.lang.String" value="com.java.Oracle"></constructor-arg>
+        <constructor-arg index="1" name="port" type="java.lang.Integer" value="1521"></constructor-arg>
+        <constructor-arg index="2" name="price" type="java.lang.Float" value="19800"></constructor-arg>
+        <constructor-arg index="3" name="admin" type="com.java.pojo.Admin" ref="master"></constructor-arg>
+    </bean>
+
+</beans>
